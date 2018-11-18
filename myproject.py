@@ -1,9 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
+from flask_socketio import SocketIO, join_room, emit
+from canvas import Canvas
+import sys
+
 app = Flask(__name__)
+socketio = SocketIO(app, engineio_logger=True)
+canvas = Canvas()
 
 @app.route("/")
-def hello():
-    return "<h1 style='color:blue'>Hello There!</h1>"
+def index():
+    return render_template('index.html', img_data=canvas.embed())
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+@socketio.on('draw')
+def draw_on_canvas(data):
+    canvas.draw_pixel(data['pixel'], data['color'])

@@ -8,6 +8,9 @@ name = "pypi"
 [packages]
 gunicorn = "*"
 flask = "*"
+pillow = "*"
+flask-socketio = "*"
+eventlet = "*"
 
 [requires]
 python_version = "2.7"
