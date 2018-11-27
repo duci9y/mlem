@@ -1,11 +1,16 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, join_room, emit
 from canvas import Canvas
-import sys
+from multiprocessing import Lock
+import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 socketio = SocketIO(app, engineio_logger=True)
 canvas = Canvas()
+lock = Lock()
 
 @app.route("/")
 def index():
@@ -13,4 +18,8 @@ def index():
 
 @socketio.on('draw')
 def draw_on_canvas(data):
-    canvas.draw_pixel(data['pixel'], data['color'])
+    with lock:
+        logging.debug("{}'s lock: {}".format(os.getpid(), id(lock)))
+        canvas.draw_pixel(data['pixel'], data['color'])
+
+    emit('canvas update', data, broadcast=True)

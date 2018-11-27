@@ -17,6 +17,10 @@
             console.log('Websocket connected!');
         });
 
+        socket.on('canvas update', function(data) {
+            console.log(data);
+        });
+
         // emit a message on the 'draw' channel to draw a random line on the canvas
         function drawOnCanvas() {
           console.log('drawing line...');
