@@ -1,5 +1,5 @@
 from PIL import Image
-from StringIO import StringIO
+from io import BytesIO
 import base64
 
 class Canvas:
@@ -8,14 +8,14 @@ class Canvas:
         self.canvas = Image.new('RGB', (dimen, dimen), color=(255, 255, 255))
 
     def raw_png(self):
-        img_io = StringIO()
+        img_io = BytesIO()
         self.canvas.save(img_io, 'PNG')
         img_io.seek(0)
         return img_io.read()
 
     # return image src to put in browser's image tag
     def embed(self):
-        img_io = StringIO()
+        img_io = BytesIO()
         self.canvas.save(img_io, 'JPEG', quality=70)
         img_io.seek(0)
         data_uri = base64.b64encode(img_io.read()).decode('utf-8').replace('\n', '')

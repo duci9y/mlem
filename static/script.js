@@ -48,8 +48,7 @@ class Controller {
     }
 
     canvasUpdate(data) {
-        var buffer = Uint16Array(data);
-        console.log(buffer);
+        var buffer = new Uint16Array(data);
 
         var poppedColor = this.ctx.fillStyle
         this.ctx.fillStyle = 'rgb(' + buffer[2] + ',' + buffer[3] + ',' + buffer[4] + ')'
@@ -119,7 +118,6 @@ class Controller {
                     // g_view = g;
                     // b_view = b;
 
-                    console.log(bufView);
 
                     this.socket.emit('draw', buffer);
 

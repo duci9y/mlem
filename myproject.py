@@ -9,7 +9,7 @@ import struct
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-socketio = SocketIO(app, engineio_logger=True, binary=True)
+socketio = SocketIO(app, logger=True, engineio_logger=True)
 canvas = Canvas()
 lock = Lock()
 
@@ -27,6 +27,7 @@ def raw_canvas_data():
 
 @socketio.on('draw')
 def draw_on_canvas(data):
+
     result = struct.unpack('hhhhh', data)
     x, y, r, g, b = result
 
@@ -35,5 +36,4 @@ def draw_on_canvas(data):
 
         logging.debug("{}'s lock: {}".format(os.getpid(), id(lock)))
 
-    print(data)
-    emit('canvas update', { u'a': u'b'}, broadcast=True)
+    emit('canvas update', data, broadcast=True)
