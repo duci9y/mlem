@@ -23,6 +23,12 @@ class Controller {
 
         this.setupSocketHandlers()
         this.setupCanvasHandlers()
+
+        var img = new Image();
+        img.onload = function () {
+            this.ctx.drawImage(img, 0, 0);
+        }.bind(this)
+        img.src = "/canvas.png";
     }
 
     setupSocketHandlers() {

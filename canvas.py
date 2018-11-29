@@ -5,7 +5,13 @@ import base64
 class Canvas:
     def __init__(self, dimen=600):
         self.dimen = dimen
-        self.canvas = Image.new('RGB', (dimen, dimen), color=(0, 0, 0))
+        self.canvas = Image.new('RGB', (dimen, dimen), color=(255, 255, 255))
+
+    def raw_png(self):
+        img_io = StringIO()
+        self.canvas.save(img_io, 'PNG')
+        img_io.seek(0)
+        return img_io.read()
 
     # return image src to put in browser's image tag
     def embed(self):
