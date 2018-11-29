@@ -1,77 +1,113 @@
-var canvas = document.getElementById("paint");
-var ctx = canvas.getContext("2d");
-var curX, curY, prevX, prevY;
-var hold = false;
-ctx.lineWidth = 2;
-var canvas_data = { "pencil": [] }
+var SIDE = 600
 
-var socket = io.connect('//' + document.domain + ':' + location.port);
+class Controller {
 
-// verify our websocket connection is established
-socket.on('connect', function() {
-    console.log('Websocket connected!');
-});
+    constructor() {
+        this.fixedCanvas = document.getElementById('fixed')
+        this.updatesCanvas = document.getElementById('updates')
 
-socket.on('canvas update', function(data) {
-    console.log(data);
-    var poppedColor = ctx.fillStyle;
-    ctx.fillStyle = 'rgb(' + data.color[0] + ',' + data.color[1] + ',' + data.color[2] + ')';
-    ctx.fillRect(data.pixel[0], data.pixel[1], 1, 1);
-    ctx.fillStyle = poppedColor;
+        this.ctx = this.fixedCanvas.getContext('2d')
+        this.drawingCtx = this.updatesCanvas.getContext('2d')
 
-});
+        this.ctx.lineWidth = 2
+        this.drawingCtx.lineWidth = 2
 
-// emit a message on the 'draw' channel to draw a random line on the canvas
-function drawOnCanvas() {
-    console.log('drawing line...');
-    horizontal = Math.random() * 600
-    vertical = Math.random() * 550
-    for (var i = 0; i < 50; i++) {
-        socket.emit('draw', { pixel: [horizontal, vertical + i], color: [255, 255, 255] });
+        this.currX = 0
+        this.currY = 0
+        this.prevX = 0
+        this.prevY = 0
+
+        this.mouseHeld = false
+
+        this.socket = io.connect('//' + document.domain + ':' + location.port)
+
+        this.setupSocketHandlers()
+        this.setupCanvasHandlers()
     }
-}
 
+    setupSocketHandlers() {
+        this.socket.on('connect', function() {
+            console.log('Websocket connected!')
+        })
 
-function color(color_value) {
-    ctx.strokeStyle = color_value;
-    ctx.fillStyle = color_value;
-}
+        this.socket.on('canvas update', this.canvasUpdate.bind(this))
+    }
 
-// pencil tool
-function pencil() {
+    setupCanvasHandlers() {
+        this.updatesCanvas.onmousedown = this.mouseDown.bind(this)
+        this.updatesCanvas.onmousemove = this.mouseMove.bind(this)
+        this.updatesCanvas.onmouseup = this.mouseUp.bind(this)
+        this.updatesCanvas.onmouseout = this.mouseUp.bind(this)
+    }
 
-    canvas.onmousedown = function(e) {
-        curX = e.clientX - canvas.offsetLeft;
-        curY = e.clientY - canvas.offsetTop;
-        hold = true;
+    canvasUpdate(data) {
+        var poppedColor = this.ctx.fillStyle
+        this.ctx.fillStyle = 'rgb(' + data.color[0] + ',' + data.color[1] + ',' + data.color[2] + ')'
+        this.ctx.fillRect(data.pixel[0], data.pixel[1], 1, 1)
+        this.ctx.fillStyle = poppedColor
+    }
 
-        prevX = curX;
-        prevY = curY;
-        ctx.beginPath();
-        ctx.moveTo(prevX, prevY);
-    };
+    mouseDown(e) {
+        this.currX = e.clientX - this.updatesCanvas.offsetLeft
+        this.currY = e.clientY - this.updatesCanvas.offsetTop
+        this.mouseHeld = true
 
-    canvas.onmousemove = function(e) {
-        if (hold) {
-            curX = e.clientX - canvas.offsetLeft;
-            curY = e.clientY - canvas.offsetTop;
-            draw();
+        this.prevX = this.currX
+        this.prevY = this.currY
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.prevX, this.prevY)
+        this.drawingCtx.beginPath()
+        this.drawingCtx.moveTo(this.prevX, this.prevY)
+    }
 
-            socket.emit('draw', { pixel: [curX, curY], color: [127, 127, 127]});
+    mouseMove(e) {
+        if (!this.mouseHeld) { return }
+
+        this.currX = e.clientX - this.updatesCanvas.offsetLeft
+        this.currY = e.clientY - this.updatesCanvas.offsetTop
+
+        this.ctx.lineTo(this.currX, this.currY)
+        this.ctx.stroke()
+        this.drawingCtx.lineTo(this.currX, this.currY)
+        // stroke only one canvas, stroke the other on mouseup
+        // this.drawingCtx.stroke()
+    }
+
+    mouseUp(e) {
+        if (!this.mouseHeld) { return }
+        this.mouseHeld = false
+
+        this.drawingCtx.stroke()
+
+        let imageData = this.drawingCtx.getImageData(0, 0, SIDE, SIDE)
+
+        let data = imageData.data
+
+        for (var y = 0; y < imageData.height; y++) {
+            for (var x = 0; x < imageData.width; x++) {
+                // R x, R y
+                let z = (y * imageData.width) + (x % imageData.width)
+                let r = z * 4
+
+                if (!(data.slice(r, r + 4).every(el => { return el == 0 }))) {
+                    this.socket.emit('draw', {
+                        pixel: [x, y],
+                        color: [data[r], data[r + 1], data[r + 2]]
+                    })
+                }
+            }
         }
-    };
 
-    canvas.onmouseup = function(e) {
-        hold = false;
-    };
+        this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
+    }
 
-    canvas.onmouseout = function(e) {
-        hold = false;
-    };
+    setColor(newColor) {
+        this.ctx.fillStyle = newColor
+        this.ctx.strokeStyle = newColor
 
-    function draw() {
-        ctx.lineTo(curX, curY);
-        ctx.stroke();
-        canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
+        this.drawingCtx.fillStyle = newColor
+        this.drawingCtx.strokeStyle = newColor
     }
 }
+
+var ctrl = new Controller()
