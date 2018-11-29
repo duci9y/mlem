@@ -20,6 +20,7 @@ class Controller {
         this.mouseHeld = false
 
         this.socket = io.connect('//' + document.domain + ':' + location.port)
+        this.socket.binaryType = 'blob';
 
         this.setupSocketHandlers()
         this.setupCanvasHandlers()
@@ -47,9 +48,11 @@ class Controller {
     }
 
     canvasUpdate(data) {
+        var buffer = new Uint16Array(data);
+
         var poppedColor = this.ctx.fillStyle
-        this.ctx.fillStyle = 'rgb(' + data.color[0] + ',' + data.color[1] + ',' + data.color[2] + ')'
-        this.ctx.fillRect(data.pixel[0], data.pixel[1], 1, 1)
+        this.ctx.fillStyle = 'rgb(' + buffer[2] + ',' + buffer[3] + ',' + buffer[4] + ')'
+        this.ctx.fillRect(buffer[0], buffer[1], 1, 1)
         this.ctx.fillStyle = poppedColor
     }
 
@@ -96,10 +99,32 @@ class Controller {
                 let r = z * 4
 
                 if (!(data.slice(r, r + 4).every(el => { return el == 0 }))) {
-                    this.socket.emit('draw', {
-                        pixel: [x, y],
-                        color: [data[r], data[r + 1], data[r + 2]]
-                    })
+                    var buffer = new ArrayBuffer(10);
+                    var bufView = new Uint16Array(buffer);
+                    bufView[0] = x;
+                    bufView[1] = y;
+                    bufView[2] = data[r];
+                    bufView[3] = data[r + 1];
+                    bufView[4] = data[r + 2];
+                    // var x_view = new Uint32Array(buffer, 0, 8);
+                    // var y_view = new Uint32Array(buffer, 2, 8);
+                    // var r_view = new Uint16Array(buffer, 4, 4);
+                    // var g_view = new Uint16Array(buffer, 5, 4);
+                    // var b_view = new Uint16Array(buffer, 6, 4);
+                    //
+                    // x_view = x;
+                    // y_view = y;
+                    // r_view = r;
+                    // g_view = g;
+                    // b_view = b;
+
+
+                    this.socket.emit('draw', buffer);
+
+                    // this.socket.emit('draw', {
+                    //     pixel: [x, y],
+                    //     color: [data[r], data[r + 1], data[r + 2]]
+                    // })
                 }
             }
         }
