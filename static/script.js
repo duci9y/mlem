@@ -121,7 +121,7 @@ class Controller {
 
                     console.log(bufView);
 
-                    this.socket.binary(true).emit('draw', buffer);
+                    this.socket.emit('draw', buffer);
 
                     // this.socket.emit('draw', {
                     //     pixel: [x, y],
