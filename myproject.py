@@ -4,11 +4,12 @@ from canvas import Canvas
 from multiprocessing import Lock
 import os
 import logging
+import struct
 
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-socketio = SocketIO(app, engineio_logger=True)
+socketio = SocketIO(app, engineio_logger=True, binary=True)
 canvas = Canvas()
 lock = Lock()
 
@@ -26,8 +27,13 @@ def raw_canvas_data():
 
 @socketio.on('draw')
 def draw_on_canvas(data):
-    with lock:
-        logging.debug("{}'s lock: {}".format(os.getpid(), id(lock)))
-        canvas.draw_pixel(data['pixel'], data['color'])
+    result = struct.unpack('hhhhh', data)
+    x, y, r, g, b = result
 
-    emit('canvas update', data, broadcast=True)
+    with lock:
+        canvas.draw_pixel([x, y], (r, g, b))
+
+        logging.debug("{}'s lock: {}".format(os.getpid(), id(lock)))
+
+    print(data)
+    emit('canvas update', { u'a': u'b'}, broadcast=True)

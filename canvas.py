@@ -25,7 +25,7 @@ class Canvas:
     def draw_pixel(self, pixel, color):
         x, y = pixel
         if self.valid_bounds(x, y):
-            self.canvas.load()[x, y] = tuple(color)
+            self.canvas.load()[x, y] = color
 
     # check if given pixel indices are valid
     def valid_bounds(self, x, y):
