@@ -14,22 +14,21 @@ class Controller {
 
         this.currX = 0
         this.currY = 0
-        this.prevX = 0
-        this.prevY = 0
 
         this.mouseHeld = false
+        this.batcher = 0
 
         this.socket = io.connect('//' + document.domain + ':' + location.port)
-        this.socket.binaryType = 'blob';
+        this.socket.binaryType = 'blob'
 
         this.setupSocketHandlers()
         this.setupCanvasHandlers()
 
-        var img = new Image();
+        var img = new Image()
         img.onload = function () {
-            this.ctx.drawImage(img, 0, 0);
+            this.ctx.drawImage(img, 0, 0)
         }.bind(this)
-        img.src = "/canvas.png";
+        img.src = "/canvas.png"
     }
 
     setupSocketHandlers() {
@@ -37,7 +36,7 @@ class Controller {
             console.log('Websocket connected!')
         })
 
-        this.socket.on('canvas update', this.canvasUpdate.bind(this))
+        this.socket.on('c', this.canvasUpdate.bind(this))
     }
 
     setupCanvasHandlers() {
@@ -48,12 +47,13 @@ class Controller {
     }
 
     canvasUpdate(data) {
-        var buffer = new Uint16Array(data);
+        var img = new Image()
 
-        var poppedColor = this.ctx.fillStyle
-        this.ctx.fillStyle = 'rgb(' + buffer[2] + ',' + buffer[3] + ',' + buffer[4] + ')'
-        this.ctx.fillRect(buffer[0], buffer[1], 1, 1)
-        this.ctx.fillStyle = poppedColor
+        img.onload = function () {
+            this.ctx.drawImage(img, 0, 0)
+        }.bind(this)
+
+        img.src = data
     }
 
     mouseDown(e) {
@@ -61,16 +61,16 @@ class Controller {
         this.currY = e.clientY - this.updatesCanvas.offsetTop
         this.mouseHeld = true
 
-        this.prevX = this.currX
-        this.prevY = this.currY
         this.ctx.beginPath()
-        this.ctx.moveTo(this.prevX, this.prevY)
+        this.ctx.moveTo(this.currX, this.currY)
         this.drawingCtx.beginPath()
-        this.drawingCtx.moveTo(this.prevX, this.prevY)
+        this.drawingCtx.moveTo(this.currX, this.currY)
     }
 
     mouseMove(e) {
         if (!this.mouseHeld) { return }
+
+        this.batcher++
 
         this.currX = e.clientX - this.updatesCanvas.offsetLeft
         this.currY = e.clientY - this.updatesCanvas.offsetTop
@@ -80,6 +80,16 @@ class Controller {
         this.drawingCtx.lineTo(this.currX, this.currY)
         // stroke only one canvas, stroke the other on mouseup
         // this.drawingCtx.stroke()
+
+        if (this.batcher < 25) { return }
+
+        this.batcher = 0
+
+        this.drawingCtx.stroke()
+
+        this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
+
+        this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
     }
 
     mouseUp(e) {
@@ -88,46 +98,7 @@ class Controller {
 
         this.drawingCtx.stroke()
 
-        let imageData = this.drawingCtx.getImageData(0, 0, SIDE, SIDE)
-
-        let data = imageData.data
-
-        for (var y = 0; y < imageData.height; y++) {
-            for (var x = 0; x < imageData.width; x++) {
-                // R x, R y
-                let z = (y * imageData.width) + (x % imageData.width)
-                let r = z * 4
-
-                if (!(data.slice(r, r + 4).every(el => { return el == 0 }))) {
-                    var buffer = new ArrayBuffer(10);
-                    var bufView = new Uint16Array(buffer);
-                    bufView[0] = x;
-                    bufView[1] = y;
-                    bufView[2] = data[r];
-                    bufView[3] = data[r + 1];
-                    bufView[4] = data[r + 2];
-                    // var x_view = new Uint32Array(buffer, 0, 8);
-                    // var y_view = new Uint32Array(buffer, 2, 8);
-                    // var r_view = new Uint16Array(buffer, 4, 4);
-                    // var g_view = new Uint16Array(buffer, 5, 4);
-                    // var b_view = new Uint16Array(buffer, 6, 4);
-                    //
-                    // x_view = x;
-                    // y_view = y;
-                    // r_view = r;
-                    // g_view = g;
-                    // b_view = b;
-
-
-                    this.socket.emit('draw', buffer);
-
-                    // this.socket.emit('draw', {
-                    //     pixel: [x, y],
-                    //     color: [data[r], data[r + 1], data[r + 2]]
-                    // })
-                }
-            }
-        }
+        this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
 
         this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
     }

@@ -6,6 +6,7 @@ class Canvas:
     def __init__(self, dimen=600):
         self.dimen = dimen
         self.canvas = Image.new('RGB', (dimen, dimen), color=(255, 255, 255))
+        self.data = self.canvas.load()
 
     def raw_png(self):
         img_io = BytesIO()
@@ -25,7 +26,7 @@ class Canvas:
     def draw_pixel(self, pixel, color):
         x, y = pixel
         if self.valid_bounds(x, y):
-            self.canvas.load()[x, y] = color
+            self.data[x, y] = color
 
     # check if given pixel indices are valid
     def valid_bounds(self, x, y):
