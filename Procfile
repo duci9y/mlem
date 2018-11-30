@@ -1,1 +1,1 @@
-web: gunicorn -k eventlet -w 4 wsgi:app --preload
+web: gunicorn -k eventlet -w 1 wsgi:app --preload
