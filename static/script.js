@@ -57,8 +57,8 @@ class Controller {
     }
 
     mouseDown(e) {
-        this.currX = e.clientX - this.updatesCanvas.offsetLeft
-        this.currY = e.clientY - this.updatesCanvas.offsetTop
+        this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
+        this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
         this.mouseHeld = true
 
         this.ctx.beginPath()
@@ -72,8 +72,8 @@ class Controller {
 
         this.batcher++
 
-        this.currX = e.clientX - this.updatesCanvas.offsetLeft
-        this.currY = e.clientY - this.updatesCanvas.offsetTop
+        this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
+        this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
 
         this.ctx.lineTo(this.currX, this.currY)
         this.ctx.stroke()
