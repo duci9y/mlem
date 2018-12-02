@@ -114,6 +114,8 @@ class Controller {
         // previous clear
         this.drawingCtx.beginPath()
         this.drawingCtx.moveTo(this.currX, this.currY)
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.currX, this.currY)
     }
 }
 
