@@ -3,6 +3,7 @@ var SIDE = 600
 class Controller {
 
     constructor() {
+        console.log("constructor running")
         this.fixedCanvas = document.getElementById('fixed')
         this.updatesCanvas = document.getElementById('updates')
 

@@ -20,8 +20,11 @@ def index():
 
 @app.route("/canvas.png")
 def raw_canvas_data():
+    # img_tag = "<img src='" + canvas.embed() + "'>"
+    # return img_tag
     return Response(canvas.raw_png(), mimetype='image/png')
 
 @socketio.on('d')
 def draw_on_canvas(data):
+    canvas.load_updates(data)
     emit('c', data, broadcast=True)

@@ -1,11 +1,12 @@
-from PIL import Image
+from PIL import Image, ImageDraw
 from io import BytesIO
 import base64
+import re
 
 class Canvas:
     def __init__(self, dimen=600):
         self.dimen = dimen
-        self.canvas = Image.new('RGB', (dimen, dimen), color=(255, 255, 255))
+        self.canvas = Image.new('RGBA', (dimen, dimen), color=(255, 255, 255))
         self.data = self.canvas.load()
 
     def raw_png(self):
@@ -17,10 +18,17 @@ class Canvas:
     # return image src to put in browser's image tag
     def embed(self):
         img_io = BytesIO()
-        self.canvas.save(img_io, 'JPEG', quality=70)
+        self.canvas.save(img_io, 'PNG', quality=70)
         img_io.seek(0)
         data_uri = base64.b64encode(img_io.read()).decode('utf-8').replace('\n', '')
         return "data:image/png;base64,{0}".format(data_uri)
+
+    # update canvas
+    def load_updates(self, data):
+        base64data = data.split(',')[1]
+        img_data = base64.b64decode(base64data)
+        updates = Image.open(BytesIO(img_data))
+        self.canvas = Image.alpha_composite(self.canvas, updates)
 
     # draw a single pixel
     def draw_pixel(self, pixel, color):
