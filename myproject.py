@@ -29,3 +29,5 @@ def draw_on_canvas(data):
     with lock:
         canvas.load_updates(data)
     emit('c', data, broadcast=True)
+
+
