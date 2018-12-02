@@ -3,7 +3,6 @@ var SIDE = 600
 class Controller {
 
     constructor() {
-        console.log("constructor running")
         this.fixedCanvas = document.getElementById('fixed')
         this.updatesCanvas = document.getElementById('updates')
 
@@ -86,22 +85,14 @@ class Controller {
 
         this.batcher = 0
 
-        this.drawingCtx.stroke()
-
-        this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
-
-        this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
+        this.sendUpdates()
     }
 
     mouseUp(e) {
         if (!this.mouseHeld) { return }
         this.mouseHeld = false
 
-        this.drawingCtx.stroke()
-
-        this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
-
-        this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
+        this.sendUpdates()
     }
 
     setColor(newColor) {
@@ -110,6 +101,19 @@ class Controller {
 
         this.drawingCtx.fillStyle = newColor
         this.drawingCtx.strokeStyle = newColor
+    }
+
+    sendUpdates() {
+        this.drawingCtx.stroke()
+
+        this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
+
+        this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
+
+        // reset path too because stroking it will just restore it after
+        // previous clear
+        this.drawingCtx.beginPath()
+        this.drawingCtx.moveTo(this.currX, this.currY)
     }
 }
 
