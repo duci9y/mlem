@@ -26,5 +26,6 @@ def raw_canvas_data():
 
 @socketio.on('d')
 def draw_on_canvas(data):
-    canvas.load_updates(data)
+    with lock:
+        canvas.load_updates(data)
     emit('c', data, broadcast=True)
