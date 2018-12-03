@@ -11,6 +11,7 @@ flask = "*"
 pillow = "*"
 flask-socketio = "*"
 eventlet = "*"
+hashids = "*"
 
 [requires]
 python_version = "3.7"

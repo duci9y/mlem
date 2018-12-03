@@ -28,13 +28,15 @@ class Controller {
         img.onload = function () {
             this.ctx.drawImage(img, 0, 0)
         }.bind(this)
-        img.src = "/canvas.png"
+        img.src = window.location.href + '/canvas.png'
     }
 
     setupSocketHandlers() {
         this.socket.on('connect', function() {
             console.log('Websocket connected!')
-        })
+            let parts = window.location.href.split('/')
+            this.socket.emit('join', { room: parts.pop() || parts.pop() })
+        }.bind(this))
 
         this.socket.on('c', this.canvasUpdate.bind(this))
     }
