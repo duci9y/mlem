@@ -127,6 +127,16 @@ class Controller {
         this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
         this.drawingCtx.clearRect(0, 0, SIDE, SIDE);
     }
+
+    downloadImage() {
+        var imgURL = this.fixedCanvas
+            .toDataURL("image/png")
+        //   .replace("image/png", "image/octet-stream")
+        var dlink = document.getElementById("dlink")
+        dlink.href = imgURL;
+        dlink.setAttribute("download", "image.png")
+
+    }
 }
 
 var ctrl = new Controller()

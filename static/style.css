@@ -1,3 +1,8 @@
+body{
+    text-align:center;
+    background-color: #404040
+}
+
 #toolset {
     width     : 100px;
     height    : 440px;
@@ -13,69 +18,67 @@
     top       : 50px;
 }
 
-#colorset {
-    position  : absolute;
-    left      : 0px;
-    top       : 625px;
-    width     : 760px;
+canvas{
+    /* background-color: white; */
+    position: absolute;
+    margin: 6px auto;
+    left: 0;
+    right: 0;
+    border: 0px solid #000000;
 }
 
-#title {
-    position  : absolute:
-    left      : 500px;
+.tools{
+    width: 100%;
+    position:fixed;
+    bottom: 57px;
+    left:0px;
+    background-color: rgba(50, 50, 50, .55);
+    border-width: 0px;
+    text-align:center;
 }
 
-#penciltool {
-    background: #358128;
-    color     : #f3f3f3;
-    width     : 80px;
-    height    : 25px;
-    border    : 1px solid #33842a;
-    -webkit-border-radius: 0 15px 15px 0;
-    -moz-border-radius: 0 15px 15px 0;
-    box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+.tools fieldset{
+    display: inline-block;
+    border: 0px;
+    clear: left;
+}
+.tools>div{
+    text-align: center;
+    margin: 0px auto;
+    width: 95%;
+    position: absolute;
+    left: 0px; right:0px;
 }
 
-#linetool {
-    background: #358128;
-    color     : #f3f3f3;
-    width     : 80px;
-    height    : 25px;
-    border    : 1px solid #33842a;
-    -webkit-border-radius: 0 15px 15px 0;
-    -moz-border-radius: 0 15px 15px 0;
-    box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+.tools>div>div{
+    display:inline-block;
+    /* float: right; */
+}
+.tools img{
+    width: 20px;
+    margin: 10px auto;
+}
+#dlink{
+    /* float: left; */
+    margin-top: 10px;
 }
 
-#rectangletool {
-    background: #358128;
-    color     : #f3f3f3;
-    width     : 80px;
-    height    : 25px;
-    border    : 1px solid #33842a;
-    -webkit-border-radius: 0 15px 15px 0;
-    -moz-border-radius: 0 15px 15px 0;
-    box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+
+#colorset button{
+    border: 1px solid white;
+    border-radius:50%;
 }
 
-#circletool {
-    background: #358128;
-    color     : #f3f3f3;
-    width     : 80px;
-    height    : 25px;
-    border    : 1px solid #33842a;
-    -webkit-border-radius: 0 15px 15px 0;
-    -moz-border-radius: 0 15px 15px 0;
-    box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+#colorset button:focus{
+    border: 2px solid black;
 }
 
-#erasertool {
-    background: #358128;
-    color     : #f3f3f3;
-    width     : 80px;
-    height    : 25px;
-    border    : 1px solid #33842a;
-    -webkit-border-radius: 0 15px 15px 0;
-    -moz-border-radius: 0 15px 15px 0;
-    box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+#resettool {
+    display:block;
+    background-image: url("reset.png");
+    background-position: left top;
+    background-repeat: no-repeat;
+    margin-top: 5px;
+    width: 20px;
+    height: 20px;
 }
