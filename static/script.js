@@ -102,8 +102,6 @@ class Controller {
         this.drawingCtx.beginPath()
         this.drawingCtx.moveTo(p1.x, p1.y)
 
-        console.log(this.points);
-
         for (var i = 1, len = this.points.length; i < len; i++) {
             // we pick the point between pi+1 & pi+2 as the
             // end point and p1 as our control point
