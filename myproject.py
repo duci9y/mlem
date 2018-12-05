@@ -30,7 +30,7 @@ room_counter = 0
 @app.route('/')
 def index():
     # TODO: create room interface
-    return render_template('paint.html')
+    return render_template('create.html')
 
 
 @app.route('/canvas', methods=['POST'])
@@ -51,6 +51,7 @@ def create_canvas():
 @app.route('/canvas/<string:room>')
 def get_canvas(room):
     if room not in rooms:
+        #TODO: design better error page
         return abort(404)
     else:
         return render_template('paint.html')

@@ -1,0 +1,42 @@
+<html>
+
+<head>
+        <title>MLemphis Home</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+        <script>
+                function createCanvas() {
+                        var xhr = new XMLHttpRequest()
+                        xhr.open("POST", "{{ url_for('create_canvas') }}", true)
+                        xhr.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                        room_data = JSON.parse(xhr.responseText)
+                                        var base = window.location.href
+                                        window.location = base + "canvas/" + room_data.room
+                                }
+                        }
+                        xhr.send()
+
+                }  
+
+                function openCanvas() {
+                        var room = document.getElementById("room_id").value
+                        var url = window.location.href + "canvas/" + room
+                        window.location = url
+                }
+        </script>
+
+        <div class="parent">
+                <img src="{{ url_for('static', filename='banner.png') }}">
+        
+        <hr>
+        <button onclick="createCanvas()" id="create"> Create New Canvas </button>
+        <br>
+        <p>OR OPEN SPECIFIC ROOM</p>
+        <input type="text" name="room" placeholder="Enter Room ID" id="room_id" class="open"/>
+        <button onclick="openCanvas()" class="open">Submit</button>
+        </div>
+</body>
+</html>
