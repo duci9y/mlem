@@ -121,13 +121,17 @@ class Controller {
     }
 
     reset() {
-        console.log('resetting')
-
         this.drawingCtx.fillStyle = '#FFFFFF'
         this.drawingCtx.fillRect(0, 0, SIDE, SIDE)
 
-        this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
+        this.ctx.fillStyle = '#FFFFFF'
+        this.ctx.fillRect(0, 0, SIDE, SIDE)
+
+        this.sendUpdates()
+
         this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
+
+        this.ctx.clearRect(0, 0, SIDE, SIDE)
     }
 
     downloadImage() {
