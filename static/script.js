@@ -18,6 +18,8 @@ class Controller {
         this.mouseHeld = false
         this.batcher = 0
 
+        this.points = []
+
         this.socket = io.connect('//' + document.domain + ':' + location.port)
         this.socket.binaryType = 'blob'
 
@@ -79,21 +81,10 @@ class Controller {
         this.penDown()
     }
 
-    penDown() {
-        this.mouseHeld = true
-
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.currX, this.currY)
-        this.drawingCtx.beginPath()
-        this.drawingCtx.moveTo(this.currX, this.currY)
-    }
-
     touchMove(e) {
         e.preventDefault()
 
         if (!this.mouseHeld) { return }
-
-        this.batcher++
 
         this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
         this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
@@ -104,20 +95,28 @@ class Controller {
     mouseMove(e) {
         if (!this.mouseHeld) { return }
 
-        this.batcher++
-
         this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
         this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
 
         this.penMove()
     }
 
+    penDown() {
+        this.mouseHeld = true
+
+        this.drawingCtx.beginPath()
+        this.drawingCtx.moveTo(this.currX, this.currY)
+
+        this.points.push({ x: this.currX, y: this.currY })
+    }
+
     penMove() {
-        this.ctx.lineTo(this.currX, this.currY)
-        this.ctx.stroke()
+        this.batcher++
+
         this.drawingCtx.lineTo(this.currX, this.currY)
-        // stroke only one canvas, stroke the other on mouseup
-        // this.drawingCtx.stroke()
+        this.drawingCtx.stroke()
+
+        this.points.push({ x: this.currX, y: this.currY })
 
         if (this.batcher < 25) { return }
 
@@ -133,6 +132,8 @@ class Controller {
         this.mouseHeld = false
 
         this.sendUpdates()
+
+        this.points.length = 0
     }
 
     setColor(newColor) {
@@ -144,7 +145,27 @@ class Controller {
     }
 
     sendUpdates() {
-        this.drawingCtx.stroke()
+        if (this.points.length > 1) {
+            this.drawingCtx.beginPath()
+            this.ctx.beginPath()
+
+            this.drawingCtx.moveTo(this.points[0].x, this.points[0].y)
+            this.ctx.moveTo(this.points[0].x, this.points[0].y)
+
+            for (const point of this.points.slice(1)) {
+                this.drawingCtx.lineTo(point.x, point.y)
+                this.ctx.lineTo(point.x, point.y)
+            }
+
+            this.points = this.points.slice(this.points.length - 1)
+
+            this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
+
+            this.drawingCtx.stroke()
+            this.ctx.stroke()
+        }
+
+        this.canvasUpdate(this.updatesCanvas.toDataURL('image/png'))
 
         this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
 
@@ -154,22 +175,15 @@ class Controller {
         // previous clear
         this.drawingCtx.beginPath()
         this.drawingCtx.moveTo(this.currX, this.currY)
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.currX, this.currY)
     }
 
     reset() {
         this.drawingCtx.fillStyle = '#FFFFFF'
         this.drawingCtx.fillRect(0, 0, SIDE, SIDE)
 
-        this.ctx.fillStyle = '#FFFFFF'
-        this.ctx.fillRect(0, 0, SIDE, SIDE)
-
         this.sendUpdates()
 
         this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
-
-        this.ctx.clearRect(0, 0, SIDE, SIDE)
     }
 
     downloadImage() {
