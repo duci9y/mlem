@@ -26,13 +26,13 @@ class Controller {
         this.socket = io.connect('//' + document.domain + ':' + location.port)
         this.socket.binaryType = 'blob'
 
-        this.isDrawing, this.points = [ ]
+        this.isDrawing, this.points = []
 
         this.setupSocketHandlers()
         this.setupCanvasHandlers()
 
         var img = new Image()
-        img.onload = function () {
+        img.onload = function() {
             this.ctx.drawImage(img, 0, 0)
         }.bind(this)
         img.src = window.location.href + '/canvas.png'
@@ -58,7 +58,7 @@ class Controller {
     canvasUpdate(data) {
         var img = new Image()
 
-        img.onload = function () {
+        img.onload = function() {
             this.ctx.drawImage(img, 0, 0)
         }.bind(this)
 
@@ -66,10 +66,10 @@ class Controller {
     }
 
     midPointBtw(p1, p2) {
-      return {
-        x: p1.x + (p2.x - p1.x) / 2,
-        y: p1.y + (p2.y - p1.y) / 2
-      };
+        return {
+            x: p1.x + (p2.x - p1.x) / 2,
+            y: p1.y + (p2.y - p1.y) / 2
+        }
     }
 
     mouseDown(e) {
@@ -82,21 +82,21 @@ class Controller {
         // this.drawingCtx.beginPath()
         // this.drawingCtx.moveTo(this.currX, this.currY)
 
-        this.isDrawing = true;
-        this.points.push({ x: this.currX, y: this.currY });
+        this.isDrawing = true
+        this.points.push({ x: this.currX, y: this.currY })
     }
 
     mouseMove(e) {
-        if (!this.isDrawing) return;
+        if (!this.isDrawing) return
 
         this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
         this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
-  
-        this.points.push({ x: this.currX, y: this.currY });
-          
-        var p1 = this.points[0];
-        var p2 = this.points[1];
-          
+
+        this.points.push({ x: this.currX, y: this.currY })
+
+        var p1 = this.points[0]
+        var p2 = this.points[1]
+
         this.ctx.beginPath()
         this.ctx.moveTo(p1.x, p1.y)
         this.drawingCtx.beginPath()
@@ -105,11 +105,11 @@ class Controller {
         for (var i = 1, len = this.points.length; i < len; i++) {
             // we pick the point between pi+1 & pi+2 as the
             // end point and p1 as our control point
-            var midPoint = this.midPointBtw(p1, p2);
-            this.ctx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
-            this.drawingCtx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
-            p1 = this.points[i];
-            p2 = this.points[i+1];
+            var midPoint = this.midPointBtw(p1, p2)
+            this.ctx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y)
+            this.drawingCtx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y)
+            p1 = this.points[i]
+            p2 = this.points[i + 1]
         }
         // Draw last line as a straight line while
         // we wait for the next point to be able to calculate
@@ -123,8 +123,8 @@ class Controller {
     }
 
     mouseUp(e) {
-        this.isDrawing = false;
-        this.points.length = 0;
+        this.isDrawing = false
+        this.points.length = 0
 
         this.sendUpdates()
     }
@@ -155,11 +155,11 @@ class Controller {
     reset() {
         console.log("resetting")
 
-        this.drawingCtx.fillStyle= "#FFFFFF";
-        this.drawingCtx.fillRect(0,0,SIDE,SIDE);
+        this.drawingCtx.fillStyle = "#FFFFFF"
+        this.drawingCtx.fillRect(0, 0, SIDE, SIDE)
 
         this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
-        this.drawingCtx.clearRect(0, 0, SIDE, SIDE);
+        this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
     }
 
     downloadImage() {
@@ -167,7 +167,7 @@ class Controller {
             .toDataURL("image/png")
         //   .replace("image/png", "image/octet-stream")
         var dlink = document.getElementById("dlink")
-        dlink.href = imgURL;
+        dlink.href = imgURL
         dlink.setAttribute("download", "image.png")
 
     }

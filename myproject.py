@@ -98,5 +98,3 @@ def on_join(data):
     else:
         join_room(room_id)
         send('success', room=room_id)
-
-
