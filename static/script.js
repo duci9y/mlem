@@ -44,8 +44,13 @@ class Controller {
     setupCanvasHandlers() {
         this.updatesCanvas.onmousedown = this.mouseDown.bind(this)
         this.updatesCanvas.onmousemove = this.mouseMove.bind(this)
-        this.updatesCanvas.onmouseup = this.mouseUp.bind(this)
-        this.updatesCanvas.onmouseout = this.mouseUp.bind(this)
+        this.updatesCanvas.onmouseup = this.penUp.bind(this)
+        this.updatesCanvas.onmouseout = this.penUp.bind(this)
+
+        this.updatesCanvas.ontouchstart = this.touchStart.bind(this)
+        this.updatesCanvas.ontouchmove = this.touchMove.bind(this)
+        this.updatesCanvas.ontouchend = this.penUp.bind(this)
+        this.updatesCanvas.ontouchout = this.penUp.bind(this)
     }
 
     canvasUpdate(data) {
@@ -58,15 +63,42 @@ class Controller {
         img.src = data
     }
 
+    touchStart(e) {
+        e.preventDefault()
+
+        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
+        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+
+        this.penDown()
+    }
+
     mouseDown(e) {
         this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
         this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+
+        this.penDown()
+    }
+
+    penDown() {
         this.mouseHeld = true
 
         this.ctx.beginPath()
         this.ctx.moveTo(this.currX, this.currY)
         this.drawingCtx.beginPath()
         this.drawingCtx.moveTo(this.currX, this.currY)
+    }
+
+    touchMove(e) {
+        e.preventDefault()
+
+        if (!this.mouseHeld) { return }
+
+        this.batcher++
+
+        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
+        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+
+        this.penMove()
     }
 
     mouseMove(e) {
@@ -77,6 +109,10 @@ class Controller {
         this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
         this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
 
+        this.penMove()
+    }
+
+    penMove() {
         this.ctx.lineTo(this.currX, this.currY)
         this.ctx.stroke()
         this.drawingCtx.lineTo(this.currX, this.currY)
@@ -90,7 +126,9 @@ class Controller {
         this.sendUpdates()
     }
 
-    mouseUp(e) {
+    penUp(e) {
+        e.preventDefault()
+
         if (!this.mouseHeld) { return }
         this.mouseHeld = false
 
