@@ -86,7 +86,7 @@ def draw_on_canvas(data):
     with lock:
         canvas.load_updates(data)
 
-    emit('c', data, broadcast=True, room=room_id)
+    emit('c', data, broadcast=True, room=room_id, include_self=False)
 
 
 @socketio.on('join')
