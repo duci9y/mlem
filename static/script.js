@@ -1,4 +1,4 @@
-var SIDE = 600
+let SIDE = 600
 
 class Controller {
 
@@ -24,7 +24,7 @@ class Controller {
         this.setupSocketHandlers()
         this.setupCanvasHandlers()
 
-        var img = new Image()
+        let img = new Image()
         img.onload = function() {
             this.ctx.drawImage(img, 0, 0)
         }.bind(this)
@@ -49,7 +49,7 @@ class Controller {
     }
 
     canvasUpdate(data) {
-        var img = new Image()
+        let img = new Image()
 
         img.onload = function() {
             this.ctx.drawImage(img, 0, 0)
@@ -121,9 +121,9 @@ class Controller {
     }
 
     reset() {
-        console.log("resetting")
+        console.log('resetting')
 
-        this.drawingCtx.fillStyle = "#FFFFFF"
+        this.drawingCtx.fillStyle = '#FFFFFF'
         this.drawingCtx.fillRect(0, 0, SIDE, SIDE)
 
         this.socket.emit('d', this.updatesCanvas.toDataURL('image/png'))
@@ -131,13 +131,9 @@ class Controller {
     }
 
     downloadImage() {
-        var imgURL = this.fixedCanvas
-            .toDataURL("image/png")
-        //   .replace("image/png", "image/octet-stream")
-        var dlink = document.getElementById("dlink")
-        dlink.href = imgURL
-        dlink.setAttribute("download", "image.png")
-
+        var dlink = document.getElementById('dlink')
+        dlink.href = this.fixedCanvas.toDataURL('image/png')
+        dlink.setAttribute('download', 'image.png')
     }
 }
 
