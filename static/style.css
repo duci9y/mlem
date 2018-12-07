@@ -20,7 +20,6 @@ body{
 }
 
 canvas{
-    /* background-color: white; */
     position: absolute;
     margin: 6px auto;
     left: 0;
@@ -44,6 +43,7 @@ canvas{
     border: 0px;
     clear: left;
 }
+
 .tools>div{
     text-align: center;
     margin: 0px auto;
@@ -56,15 +56,15 @@ canvas{
     display:inline-block;
     /* float: right; */
 }
+
 .tools img{
     width: 20px;
     margin: 10px auto;
 }
+
 #dlink{
-    /* float: left; */
     margin-top: 10px;
 }
-
 
 #colorset button{
     border: 1px solid white;
@@ -83,6 +83,10 @@ canvas{
     margin-top: 5px;
     width: 20px;
     height: 20px;
+}
+
+button, a {
+    cursor: pointer;
 }
 
 /* Style rules for create canvas Page*/

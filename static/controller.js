@@ -3,6 +3,7 @@ let SIDE = 600
 class Controller {
 
     constructor() {
+        // initialize two canvases stacked on top of each other
         this.fixedCanvas = document.getElementById('fixed')
         this.updatesCanvas = document.getElementById('updates')
 
@@ -26,6 +27,7 @@ class Controller {
         this.setupSocketHandlers()
         this.setupCanvasHandlers()
 
+        // load and display current status of the canvas
         let img = new Image()
         img.onload = function() {
             this.ctx.drawImage(img, 0, 0)
@@ -35,7 +37,6 @@ class Controller {
 
     setupSocketHandlers() {
         this.socket.on('connect', function() {
-            console.log('Websocket connected!')
             let parts = window.location.href.split('/')
             this.socket.emit('join', { room: parts.pop() || parts.pop() })
         }.bind(this))

@@ -4,21 +4,11 @@ from flask_socketio import SocketIO, join_room, emit, send
 from canvas import Canvas
 from eventlet.green import threading
 from hashids import Hashids
-import os
-import logging
-import struct
-
-# logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-# socketio = SocketIO(app, logger=True, engineio_logger=True)
 canvas = Canvas()
 lock = threading.Lock()
-
-# rooms = {
-#     'ag84h': (canvas, lock,)
-# }
 
 hashids = Hashids(salt='when the full moon shines, i eat cucumber',
                   min_length=6,
@@ -29,7 +19,6 @@ room_counter = 0
 
 @app.route('/')
 def index():
-    # TODO: create room interface
     return render_template('create.html')
 
 
