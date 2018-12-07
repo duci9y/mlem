@@ -29,7 +29,7 @@ canvas{
 
 .tools{
     width: 100%;
-    position:fixed;
+    position:absolute;
     bottom: 57px;
     top: 625px;
     left:0px;
