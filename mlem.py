@@ -37,7 +37,7 @@ def index():
 def create_canvas():
     canvas = Canvas()
     lock = threading.Lock()
-    
+
     global room_counter
 
     with room_lock:
