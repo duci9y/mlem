@@ -7,8 +7,6 @@ from hashids import Hashids
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-canvas = Canvas()
-lock = threading.Lock()
 
 hashids = Hashids(salt='when the full moon shines, i eat cucumber',
                   min_length=6,
@@ -40,7 +38,6 @@ def create_canvas():
 @app.route('/canvas/<string:room>')
 def get_canvas(room):
     if room not in rooms:
-        #TODO: design better error page
         return abort(404)
     else:
         return render_template('paint.html')
@@ -55,6 +52,23 @@ def raw_canvas_data(room):
 
         with lock:
             return Response(canvas.raw_png(), mimetype='image/png')
+
+
+@app.route('/canvas/<string:room>/replay.<string:img_format>')
+def get_replay(room, img_format):
+    if img_format.lower() != 'gif' and img_format.lower() != 'webp': 
+        return abort(404)
+
+    if room not in rooms:
+        return abort(404)
+    else:
+        canvas, lock = rooms[room]
+
+        gif = img_format == 'gif'
+        mimetype = 'image/gif' if gif else 'image/webp'
+
+        with lock:
+            return Response(canvas.replay(gif=gif), mimetype=mimetype)
 
 
 @socketio.on('d')

@@ -8,6 +8,7 @@ class Canvas:
         '''initialize the server's copy of the canvas'''
         self.dimen = dimen
         self.canvas = Image.new('RGBA', (dimen, dimen), color=(255, 255, 255))
+        self.replays = []
 
     def raw_png(self):
         '''return raw PNG representation of the current canvas'''
@@ -21,4 +22,24 @@ class Canvas:
         base64data = data.split(',')[1]
         img_data = base64.b64decode(base64data)
         updates = Image.open(BytesIO(img_data))
+
         self.canvas = Image.alpha_composite(self.canvas, updates)
+
+        self.replays.append(self.canvas)
+
+    def replay(self, gif=False):
+        if not self.replays:
+            return None
+        
+        of = BytesIO()
+
+        self.replays[0].save(of,
+                             'GIF' if gif else 'WebP',
+                             save_all=True,
+                             append_images=self.replays[1:],
+                             duration=300,
+                             loop=0)
+
+        of.seek(0)
+
+        return of.read()
