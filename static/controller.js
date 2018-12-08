@@ -69,15 +69,19 @@ class Controller {
     touchStart(e) {
         e.preventDefault()
 
-        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
-        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft
+        + $(document).scrollLeft()
+        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop
+        + $(document).scrollTop()
 
         this.penDown()
     }
 
     mouseDown(e) {
-        this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
-        this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+        this.currX = e.clientX - this.updatesCanvas.offsetLeft
+        + $(document).scrollLeft()
+        this.currY = e.clientY - this.updatesCanvas.offsetTop
+        + $(document).scrollTop()
 
         this.penDown()
     }
@@ -87,8 +91,10 @@ class Controller {
 
         if (!this.mouseHeld) { return }
 
-        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
-        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft
+        + $(document).scrollLeft()
+        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop
+        + $(document).scrollTop()
 
         this.penMove()
     }
@@ -96,8 +102,10 @@ class Controller {
     mouseMove(e) {
         if (!this.mouseHeld) { return }
 
-        this.currX = e.clientX - this.updatesCanvas.offsetLeft + $(document).scrollLeft()
-        this.currY = e.clientY - this.updatesCanvas.offsetTop + $(document).scrollTop()
+        this.currX = e.clientX - this.updatesCanvas.offsetLeft
+        + $(document).scrollLeft()
+        this.currY = e.clientY - this.updatesCanvas.offsetTop
+        + $(document).scrollTop()
 
         this.penMove()
     }
