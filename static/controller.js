@@ -35,6 +35,7 @@ class Controller {
         img.src = window.location.href + '/canvas.png'
     }
 
+    // ensure connection to sockets
     setupSocketHandlers() {
         this.socket.on('connect', function() {
             let parts = window.location.href.split('/')
@@ -56,6 +57,7 @@ class Controller {
         this.updatesCanvas.ontouchout = this.penUp.bind(this)
     }
 
+    // update fixed canvas with latest
     canvasUpdate(data) {
         let img = new Image()
 
@@ -145,6 +147,7 @@ class Controller {
         this.points.length = 0
     }
 
+    // set pen color to whatever the user chose
     setColor(newColor) {
         this.ctx.fillStyle = newColor
         this.ctx.strokeStyle = newColor
@@ -153,6 +156,7 @@ class Controller {
         this.drawingCtx.strokeStyle = newColor
     }
 
+    // emit batched updates to server
     sendUpdates() {
         if (this.points.length > 1) {
             this.drawingCtx.beginPath()
@@ -186,6 +190,7 @@ class Controller {
         this.drawingCtx.moveTo(this.currX, this.currY)
     }
 
+    // reset drawing
     reset() {
         this.drawingCtx.fillStyle = '#FFFFFF'
         this.drawingCtx.fillRect(0, 0, SIDE, SIDE)
@@ -195,6 +200,7 @@ class Controller {
         this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
     }
 
+    // allow user to download image as a PNG
     downloadImage() {
         var dlink = document.getElementById('dlink')
         dlink.href = this.fixedCanvas.toDataURL('image/png')
