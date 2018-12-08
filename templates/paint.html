@@ -96,10 +96,10 @@
         <div class="row mb-3">
             <div class="col-12">
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary mr-3" id="resettool" onclick="ctrl.reset()">Reset</button>
-                    <button type="button" class="btn btn-secondary mr-3" onclick="location.href='{{ request.path }}/canvas.png'" download>Download</button>
-                    <button type="button" class="btn btn-secondary mr-3" onclick="location.href='{{ request.path }}/replay.gif'">View Replay</button>
-                    <button type="button" class="btn btn-secondary mr-3" onclick="location.href='{{ request.path }}/replay.gif'" download>Download Replay</button>
+                    <button type="button" class="btn btn-secondary mr-3" onclick="ctrl.reset()">Reset</button>
+                    <a class="btn btn-secondary mr-3" href="{{ request.path }}/canvas.png"  download>Download</a>
+                    <a class="btn btn-secondary mr-3" href="{{ request.path }}/replay.gif">View Replay</a>
+                    <a class="btn btn-secondary mr-3" href="{{ request.path }}/replay.gif" download>Download Replay</a>
                 </div>
             </div>
         </div>
