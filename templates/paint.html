@@ -6,94 +6,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Mlemphis: Let's Draw!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-    <canvas id="fixed" width="600" height="600" style="z-index: 0"></canvas>
-    <canvas id="updates" width="600" height="600" style="z-index: 1"></canvas>
-    <div class="tools">
-        <div>
-            <fieldset id="colorset">
-                <table>
-                    <tr>
-                        <td><button style="background-color: #000000; height: 20px; width: 20px;" onclick="ctrl.setColor('#000000')"></button>
-                        <td><button style="background-color: #B0171F; height: 20px; width: 20px;" onclick="ctrl.setColor('#B0171F')"></button>
-                        <td><button style="background-color: #DA70D6; height: 20px; width: 20px;" onclick="ctrl.setColor('#DA70D6')"></button>
-                        <td><button style="background-color: #8A2BE2; height: 20px; width: 20px;" onclick="ctrl.setColor('#8A2BE2')"></button>
-                        <td><button style="background-color: #0000FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#0000FF')"></button>
-                        <td><button style="background-color: #4876FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#4876FF')"></button>
-                        <td><button style="background-color: #FFFFFF; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFFFFF')"></button>
-                        <td><button style="background-color: #6E7B8B; height: 20px; width: 20px;" onclick="ctrl.setColor('#6E7B8B')"></button>
-                        <td><button style="background-color: #00C78C; height: 20px; width: 20px;" onclick="ctrl.setColor('#00C78C')"></button>
-                        <td><button style="background-color: #00FA9A; height: 20px; width: 20px;" onclick="ctrl.setColor('#00FA9A')"></button>
-                        <td><button style="background-color: #00FF7F; height: 20px; width: 20px;" onclick="ctrl.setColor('#00FF7F')"></button>
-                        <td><button style="background-color: #00C957; height: 20px; width: 20px;" onclick="ctrl.setColor('#00C957')"></button>
-                        <td><button style="background-color: #3D9140; height: 20px; width: 20px;" onclick="ctrl.setColor('#3D9140')"></button>
-                        <td><button style="background-color: #32CD32; height: 20px; width: 20px;" onclick="ctrl.setColor('#32CD32')"></button>
-                        <td><button style="background-color: #00EE00; height: 20px; width: 20px;" onclick="ctrl.setColor('#00EE00')"></button>
-                        <td><button style="background-color: #008B00; height: 20px; width: 20px;" onclick="ctrl.setColor('#008B00')"></button>
-                        <td><button style="background-color: #76EE00; height: 20px; width: 20px;" onclick="ctrl.setColor('#76EE00')"></button>
-                        <td><button style="background-color: #CAFF70; height: 20px; width: 20px;" onclick="ctrl.setColor('#CAFF70')"></button>
-                        <td><button style="background-color: #FFFF00; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFFF00')"></button>
-                        <td><button style="background-color: #CDCD00; height: 20px; width: 20px;" onclick="ctrl.setColor('#CDCD00')"></button>
-                        <td><button style="background-color: #FFF68F; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFF68F')"></button>
-                        <td><button style="background-color: #FFFACD; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFFACD')"></button>
-                        <td><button style="background-color: #FFEC8B; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFEC8B')"></button>
-                        <td><button style="background-color: #FFD700; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFD700')"></button>
-                        <td><button style="background-color: #F5DEB3; height: 20px; width: 20px;" onclick="ctrl.setColor('#F5DEB3')"></button>
-                        <td><button style="background-color: #FFE4B5; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFE4B5')"></button>
-                        <td><button style="background-color: #EECFA1; height: 20px; width: 20px;" onclick="ctrl.setColor('#EECFA1')"></button>
-                        <td><button style="background-color: #FF9912; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF9912')"></button>
-                        <td><button style="background-color: #8E388E; height: 20px; width: 20px;" onclick="ctrl.setColor('#8E388E')"></button>
-                        <td><button style="background-color: #7171C6; height: 20px; width: 20px;" onclick="ctrl.setColor('#7171C6')"></button>
-                        <td><button style="background-color: #7D9EC0; height: 20px; width: 20px;" onclick="ctrl.setColor('#7D9EC0')"></button>
-                        <td><button style="background-color: #388E8E; height: 20px; width: 20px;" onclick="ctrl.setColor('#388E8E')"></button>
-                    </tr>
-                    <tr>
-                        <td><button style="background-color: #71C671; height: 20px; width: 20px;" onclick="ctrl.setColor('#71C671')"></button>
-                        <td><button style="background-color: #8E8E38; height: 20px; width: 20px;" onclick="ctrl.setColor('#8E8E38')"></button>
-                        <td><button style="background-color: #C5C1AA; height: 20px; width: 20px;" onclick="ctrl.setColor('#C5C1AA')"></button>
-                        <td><button style="background-color: #C67171; height: 20px; width: 20px;" onclick="ctrl.setColor('#C67171')"></button>
-                        <td><button style="background-color: #555555; height: 20px; width: 20px;" onclick="ctrl.setColor('#555555')"></button>
-                        <td><button style="background-color: #848484; height: 20px; width: 20px;" onclick="ctrl.setColor('#848484')"></button>
-                        <td><button style="background-color: #F4F4F4; height: 20px; width: 20px;" onclick="ctrl.setColor('#F4F4F4')"></button>
-                        <td><button style="background-color: #EE0000; height: 20px; width: 20px;" onclick="ctrl.setColor('#EE0000')"></button>
-                        <td><button style="background-color: #FF4040; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF4040')"></button>
-                        <td><button style="background-color: #EE6363; height: 20px; width: 20px;" onclick="ctrl.setColor('#EE6363')"></button>
-                        <td><button style="background-color: #FFC1C1; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFC1C1')"></button>
-                        <td><button style="background-color: #FF7256; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF7256')"></button>
-                        <td><button style="background-color: #FF4500; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF4500')"></button>
-                        <td><button style="background-color: #F4A460; height: 20px; width: 20px;" onclick="ctrl.setColor('#F4A460')"></button>
-                        <td><button style="background-color: #FF8000; height: 20px; width: 20px;" onclick="ctrl.setColor('FF8000')"></button>
-                        <td><button style="background-color: #FFD700; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFD700')"></button>
-                        <td><button style="background-color: #8B864E; height: 20px; width: 20px;" onclick="ctrl.setColor('#8B864E')"></button>
-                        <td><button style="background-color: #9ACD32; height: 20px; width: 20px;" onclick="ctrl.setColor('#9ACD32')"></button>
-                        <td><button style="background-color: #66CD00; height: 20px; width: 20px;" onclick="ctrl.setColor('#66CD00')"></button>
-                        <td><button style="background-color: #BDFCC9; height: 20px; width: 20px;" onclick="ctrl.setColor('#BDFCC9')"></button>
-                        <td><button style="background-color: #76EEC6; height: 20px; width: 20px;" onclick="ctrl.setColor('#76EEC6')"></button>
-                        <td><button style="background-color: #40E0D0; height: 20px; width: 20px;" onclick="ctrl.setColor('#40E0D0')"></button>
-                        <td><button style="background-color: #E0EEEE; height: 20px; width: 20px;" onclick="ctrl.setColor('#E0EEEE')"></button>
-                        <td><button style="background-color: #98F5FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#98F5FF')"></button>
-                        <td><button style="background-color: #33A1C9; height: 20px; width: 20px;" onclick="ctrl.setColor('#33A1C9')"></button>
-                        <td><button style="background-color: #F0F8FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#F0F8FF')"></button>
-                        <td><button style="background-color: #4682B4; height: 20px; width: 20px;" onclick="ctrl.setColor('#4682B4')"></button>
-                        <td><button style="background-color: #C6E2FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#C6E2FF')"></button>
-                        <td><button style="background-color: #9B30FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#9B30FF')"></button>
-                        <td><button style="background-color: #EE82EE; height: 20px; width: 20px;" onclick="ctrl.setColor('#EE82EE')"></button>
-                        <td><button style="background-color: #FFC0CB; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFC0CB')"></button>
-                        <td><button style="background-color: #7CFC00; height: 20px; width: 20px;" onclick="ctrl.setColor('#7CFC00')"></button>
-                    </tr>
-                </table>
-            </fieldset>
-            <div>
-                <a id="resettool" onclick="ctrl.reset()"></a>
-                <a onclick="ctrl.downloadImage()" id="dlink"><img src="{{ url_for('static', filename='icon.png') }}"></a>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-12">
+                <div class="position-relative d-flex justify-content-center">
+                    <canvas class="position-absolute" id="fixed" width="600" height="600" style="z-index:0"></canvas>
+                    <canvas class="position-absolute" id="updates" width="600" height="600" style="z-index:1"></canvas>
+                    <div style="height: 600px; width: 600px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12" id="color-picker">
+                <div class="d-flex justify-content-center">
+                    <button style="background-color: #000000; height: 20px; width: 20px;" onclick="ctrl.setColor('#000000')"></button>
+                    <button style="background-color: #B0171F; height: 20px; width: 20px;" onclick="ctrl.setColor('#B0171F')"></button>
+                    <button style="background-color: #DA70D6; height: 20px; width: 20px;" onclick="ctrl.setColor('#DA70D6')"></button>
+                    <button style="background-color: #8A2BE2; height: 20px; width: 20px;" onclick="ctrl.setColor('#8A2BE2')"></button>
+                    <button style="background-color: #0000FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#0000FF')"></button>
+                    <button style="background-color: #4876FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#4876FF')"></button>
+                    <button style="background-color: #FFFFFF; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFFFFF')"></button>
+                    <button style="background-color: #6E7B8B; height: 20px; width: 20px;" onclick="ctrl.setColor('#6E7B8B')"></button>
+                    <button style="background-color: #00C78C; height: 20px; width: 20px;" onclick="ctrl.setColor('#00C78C')"></button>
+                    <button style="background-color: #00FA9A; height: 20px; width: 20px;" onclick="ctrl.setColor('#00FA9A')"></button>
+                    <button style="background-color: #00FF7F; height: 20px; width: 20px;" onclick="ctrl.setColor('#00FF7F')"></button>
+                    <button style="background-color: #00C957; height: 20px; width: 20px;" onclick="ctrl.setColor('#00C957')"></button>
+                    <button style="background-color: #3D9140; height: 20px; width: 20px;" onclick="ctrl.setColor('#3D9140')"></button>
+                    <button style="background-color: #32CD32; height: 20px; width: 20px;" onclick="ctrl.setColor('#32CD32')"></button>
+                    <button style="background-color: #00EE00; height: 20px; width: 20px;" onclick="ctrl.setColor('#00EE00')"></button>
+                    <button style="background-color: #008B00; height: 20px; width: 20px;" onclick="ctrl.setColor('#008B00')"></button>
+                    <button style="background-color: #76EE00; height: 20px; width: 20px;" onclick="ctrl.setColor('#76EE00')"></button>
+                    <button style="background-color: #CAFF70; height: 20px; width: 20px;" onclick="ctrl.setColor('#CAFF70')"></button>
+                    <button style="background-color: #FFFF00; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFFF00')"></button>
+                    <button style="background-color: #CDCD00; height: 20px; width: 20px;" onclick="ctrl.setColor('#CDCD00')"></button>
+                    <button style="background-color: #FFF68F; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFF68F')"></button>
+                    <button style="background-color: #FFFACD; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFFACD')"></button>
+                    <button style="background-color: #FFEC8B; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFEC8B')"></button>
+                    <button style="background-color: #FFD700; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFD700')"></button>
+                    <button style="background-color: #F5DEB3; height: 20px; width: 20px;" onclick="ctrl.setColor('#F5DEB3')"></button>
+                    <button style="background-color: #FFE4B5; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFE4B5')"></button>
+                    <button style="background-color: #EECFA1; height: 20px; width: 20px;" onclick="ctrl.setColor('#EECFA1')"></button>
+                    <button style="background-color: #FF9912; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF9912')"></button>
+                    <button style="background-color: #8E388E; height: 20px; width: 20px;" onclick="ctrl.setColor('#8E388E')"></button>
+                    <button style="background-color: #7171C6; height: 20px; width: 20px;" onclick="ctrl.setColor('#7171C6')"></button>
+                    <button style="background-color: #7D9EC0; height: 20px; width: 20px;" onclick="ctrl.setColor('#7D9EC0')"></button>
+                    <button style="background-color: #388E8E; height: 20px; width: 20px;" onclick="ctrl.setColor('#388E8E')"></button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button style="background-color: #71C671; height: 20px; width: 20px;" onclick="ctrl.setColor('#71C671')"></button>
+                    <button style="background-color: #8E8E38; height: 20px; width: 20px;" onclick="ctrl.setColor('#8E8E38')"></button>
+                    <button style="background-color: #C5C1AA; height: 20px; width: 20px;" onclick="ctrl.setColor('#C5C1AA')"></button>
+                    <button style="background-color: #C67171; height: 20px; width: 20px;" onclick="ctrl.setColor('#C67171')"></button>
+                    <button style="background-color: #555555; height: 20px; width: 20px;" onclick="ctrl.setColor('#555555')"></button>
+                    <button style="background-color: #848484; height: 20px; width: 20px;" onclick="ctrl.setColor('#848484')"></button>
+                    <button style="background-color: #F4F4F4; height: 20px; width: 20px;" onclick="ctrl.setColor('#F4F4F4')"></button>
+                    <button style="background-color: #EE0000; height: 20px; width: 20px;" onclick="ctrl.setColor('#EE0000')"></button>
+                    <button style="background-color: #FF4040; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF4040')"></button>
+                    <button style="background-color: #EE6363; height: 20px; width: 20px;" onclick="ctrl.setColor('#EE6363')"></button>
+                    <button style="background-color: #FFC1C1; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFC1C1')"></button>
+                    <button style="background-color: #FF7256; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF7256')"></button>
+                    <button style="background-color: #FF4500; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF4500')"></button>
+                    <button style="background-color: #F4A460; height: 20px; width: 20px;" onclick="ctrl.setColor('#F4A460')"></button>
+                    <button style="background-color: #FF8000; height: 20px; width: 20px;" onclick="ctrl.setColor('#FF8000')"></button>
+                    <button style="background-color: #FFD700; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFD700')"></button>
+                    <button style="background-color: #8B864E; height: 20px; width: 20px;" onclick="ctrl.setColor('#8B864E')"></button>
+                    <button style="background-color: #9ACD32; height: 20px; width: 20px;" onclick="ctrl.setColor('#9ACD32')"></button>
+                    <button style="background-color: #66CD00; height: 20px; width: 20px;" onclick="ctrl.setColor('#66CD00')"></button>
+                    <button style="background-color: #BDFCC9; height: 20px; width: 20px;" onclick="ctrl.setColor('#BDFCC9')"></button>
+                    <button style="background-color: #76EEC6; height: 20px; width: 20px;" onclick="ctrl.setColor('#76EEC6')"></button>
+                    <button style="background-color: #40E0D0; height: 20px; width: 20px;" onclick="ctrl.setColor('#40E0D0')"></button>
+                    <button style="background-color: #E0EEEE; height: 20px; width: 20px;" onclick="ctrl.setColor('#E0EEEE')"></button>
+                    <button style="background-color: #98F5FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#98F5FF')"></button>
+                    <button style="background-color: #33A1C9; height: 20px; width: 20px;" onclick="ctrl.setColor('#33A1C9')"></button>
+                    <button style="background-color: #F0F8FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#F0F8FF')"></button>
+                    <button style="background-color: #4682B4; height: 20px; width: 20px;" onclick="ctrl.setColor('#4682B4')"></button>
+                    <button style="background-color: #C6E2FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#C6E2FF')"></button>
+                    <button style="background-color: #9B30FF; height: 20px; width: 20px;" onclick="ctrl.setColor('#9B30FF')"></button>
+                    <button style="background-color: #EE82EE; height: 20px; width: 20px;" onclick="ctrl.setColor('#EE82EE')"></button>
+                    <button style="background-color: #FFC0CB; height: 20px; width: 20px;" onclick="ctrl.setColor('#FFC0CB')"></button>
+                    <button style="background-color: #7CFC00; height: 20px; width: 20px;" onclick="ctrl.setColor('#7CFC00')"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary mr-3" id="resettool" onclick="ctrl.reset()">Reset</button>
+                    <button type="button" class="btn btn-secondary mr-3" onclick="location.href={{ request.path }}/canvas.png" download>Download</button>
+                    <button type="button" class="btn btn-secondary mr-3" onclick="location.href={{ request.path }}/replay.gif">View Replay</button>
+                    <button type="button" class="btn btn-secondary mr-3" onclick="location.href={{ request.path }}/replay.gif" download>Download Replay</button>
+                </div>
             </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.8.3.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script src=" {{ url_for('static', filename='controller.js') }}"></script>
 </body>
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, abort, jsonify
+from flask import Flask, render_template, Response, abort, jsonify, request
 import flask_socketio
 from flask_socketio import SocketIO, join_room, emit, send
 from canvas import Canvas

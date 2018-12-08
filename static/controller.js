@@ -49,7 +49,7 @@ class Controller {
         this.updatesCanvas.onmousedown = this.mouseDown.bind(this)
         this.updatesCanvas.onmousemove = this.mouseMove.bind(this)
         this.updatesCanvas.onmouseup = this.penUp.bind(this)
-        this.updatesCanvas.onmouseout = this.penUp.bind(this)
+        // this.updatesCanvas.onmouseout = this.penUp.bind(this)
 
         this.updatesCanvas.ontouchstart = this.touchStart.bind(this)
         this.updatesCanvas.ontouchmove = this.touchMove.bind(this)
@@ -71,19 +71,15 @@ class Controller {
     touchStart(e) {
         e.preventDefault()
 
-        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft
-        + $(document).scrollLeft()
-        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop
-        + $(document).scrollTop()
+        this.currX = e.clientX - this.updatesCanvas.getBoundingClientRect().left
+        this.currY = e.clientY - this.updatesCanvas.getBoundingClientRect().top
 
         this.penDown()
     }
 
     mouseDown(e) {
-        this.currX = e.clientX - this.updatesCanvas.offsetLeft
-        + $(document).scrollLeft()
-        this.currY = e.clientY - this.updatesCanvas.offsetTop
-        + $(document).scrollTop()
+        this.currX = e.clientX - this.updatesCanvas.getBoundingClientRect().left
+        this.currY = e.clientY - this.updatesCanvas.getBoundingClientRect().top
 
         this.penDown()
     }
@@ -93,10 +89,8 @@ class Controller {
 
         if (!this.mouseHeld) { return }
 
-        this.currX = e.touches[0].clientX - this.updatesCanvas.offsetLeft
-        + $(document).scrollLeft()
-        this.currY = e.touches[0].clientY - this.updatesCanvas.offsetTop
-        + $(document).scrollTop()
+        this.currX = e.clientX - this.updatesCanvas.getBoundingClientRect().left
+        this.currY = e.clientY - this.updatesCanvas.getBoundingClientRect().top
 
         this.penMove()
     }
@@ -104,10 +98,8 @@ class Controller {
     mouseMove(e) {
         if (!this.mouseHeld) { return }
 
-        this.currX = e.clientX - this.updatesCanvas.offsetLeft
-        + $(document).scrollLeft()
-        this.currY = e.clientY - this.updatesCanvas.offsetTop
-        + $(document).scrollTop()
+        this.currX = e.clientX - this.updatesCanvas.getBoundingClientRect().left
+        this.currY = e.clientY - this.updatesCanvas.getBoundingClientRect().top
 
         this.penMove()
     }
@@ -198,13 +190,6 @@ class Controller {
         this.sendUpdates()
 
         this.drawingCtx.clearRect(0, 0, SIDE, SIDE)
-    }
-
-    // allow user to download image as a PNG
-    downloadImage() {
-        var dlink = document.getElementById('dlink')
-        dlink.href = this.fixedCanvas.toDataURL('image/png')
-        dlink.setAttribute('download', 'image.png')
     }
 }
 

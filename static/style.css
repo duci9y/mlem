@@ -1,126 +1,14 @@
-body{
-    text-align:center;
+body {
     background-color: #404040;
     color: white;
 }
 
-#toolset {
-    width     : 100px;
-    height    : 440px;
-    position  : absolute;
-    left      : 0px;
-    top       : 50px;
-    background: #35d128;
+#color-picker > .d-flex > * {
+    margin-right: 4px;
+    margin-bottom: 4px;
 }
 
-#paint {
-    position  : absolute;
-    left      : 130px;
-    top       : 50px;
-}
-
-canvas{
-    position: absolute;
-    margin: 6px auto;
-    left: 0;
-    right: 0;
-    border: 0px solid #000000;
-}
-
-.tools{
-    width: 100%;
-    position:absolute;
-    bottom: 57px;
-    top: 625px;
-    left:0px;
-    background-color: rgba(50, 50, 50, .55);
-    border-width: 0px;
-    text-align:center;
-}
-
-.tools fieldset{
-    display: inline-block;
-    border: 0px;
-    clear: left;
-}
-
-.tools>div{
-    text-align: center;
-    margin: 0px auto;
-    width: 95%;
-    position: absolute;
-    left: 0px; right:0px;
-}
-
-.tools>div>div{
-    display:inline-block;
-    /* float: right; */
-}
-
-.tools img{
-    width: 20px;
-    margin: 10px auto;
-}
-
-#dlink{
-    margin-top: 10px;
-}
-
-#colorset button{
+#color-picker button {
     border: 1px solid white;
-    border-radius:50%;
-}
-
-#colorset button:focus{
-    border: 2px solid black;
-}
-
-#resettool {
-    display:block;
-    background-image: url("reset.png");
-    background-position: left top;
-    background-repeat: no-repeat;
-    margin-top: 5px;
-    width: 20px;
-    height: 20px;
-}
-
-button, a {
-    cursor: pointer;
-}
-
-/* Style rules for create canvas Page*/
-
-#create{
-    padding: 15px;
-    border:0px solid;
-    border-radius: 5px;
-    margin-top: 15px;
-    font-size: 2em;
-    color: black;
-    background-color: white;
-}
-
-.open{
-    padding: 15px;
-    border:0px solid;
-    border-radius: 5px;
-    color: black;
-    background-color: white;
-}
-
-div.parent{
-    /* padding: 20% 0px; */
-    width: 70%;
-    margin: 0px auto;
-}
-
-div.parent p {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.5em;
-
-}
-div.parent img{
-    margin: 10px auto;
-    width:90%;
+    border-radius: 50%;
 }
